@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
 from flask_login import login_required, current_user
 import tmdbsimple as tmdb
-# from .models import User, Title
+from .models import User, Title
 from . import db
 
 main_app = Blueprint('reminder', __name__)
@@ -48,16 +48,16 @@ def profile():
     return render_template('profile.html', name=current_user.name)
 
 
-# @main_app.route('/add/<int:title_id>/<action>')
-# @login_required
-# def like_action(title_id, action):
-#     title = Title.query.filter_by(id=title_id).first_or_404()
-#     if action == 'save':
-#         current_user.save_title(title)
-#         db.session.commit()
-#     if action == 'delete':
-#         current_user.delete_title(title)
-#         db.session.commit()
-#     return redirect(request.referrer)
+@main_app.route('/add/<int:title_id>/<action>')
+@login_required
+def like_action(title_id, action):
+    title = Title.query.filter_by(id=title_id).first_or_404()
+    if action == 'save':
+        current_user.save_title(title)
+        db.session.commit()
+    if action == 'delete':
+        current_user.delete_title(title)
+        db.session.commit()
+    return redirect(request.referrer)
 
 

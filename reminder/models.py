@@ -3,15 +3,19 @@ from . import db
 
 
 class User(db.Model, UserMixin):
+    __tablename__ = 'User'
     __table_args__ = {'extend_existing': True}
     user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
     saved_for_notification = db.relationship(
-        'saved',
-        foreign_keys='saved.user_id',
-        backref='user', lazy='dynamic')
+        'Saved',
+        foreign_keys='Saved.user_id',
+        backref='User', lazy='dynamic')
+
+    def get_id(self):
+        return self.user_id
 
     def save_title(self, title):
         if not self.has_saved_title(title):
@@ -31,14 +35,16 @@ class User(db.Model, UserMixin):
 
 
 class Saved(db.Model):
+    __tablename__ = 'Saved'
     save_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    title_id = db.Column(db.Integer, db.ForeignKey('title.title_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
+    title_id = db.Column(db.Integer, db.ForeignKey('Title.title_id'))
 
 
 class Title(db.Model):
+    __tablename__ = 'Title'
     title_id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    saves = db.relationship('saved', backref='title', lazy='dynamic')
+    author_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
+    saves = db.relationship('Saved', backref='Title', lazy='dynamic')
