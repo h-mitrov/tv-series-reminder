@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}HTML Stripper{% endblock %}
+
+{% block main %}
+
+<div class="container theme-showcase" role="main">
+    <div class="page-header">
+        <h2>This is a TV Series Reminder</h2>
+    </div>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input
+                    type="text"
+                    class="form-control col-xl-6"
+                    name="user_search"
+                    id="user_search"
+                    placeholder="Input movie title..."
+                    autofocus
+                    required>
+          <br>
+          <button type="submit" class="btn btn-primary">Search</button>
+<!--          <button onclick="copyTextbyClick()" class="btn btn-outline-primary">Copy</button>-->
+<!--          <button onclick="deleteTextbyClick()" class="btn btn-outline-secondary">Delete</button>-->
+        </form>
+
+        {% if search.results %}
+                <div class="row">
+                    {% for title in search.results %}
+                    <div class="col-3">
+                        <div class="card">
+                          <img src="{{ title['poster_path'] }}" class="card-img-top" style="height: 400px" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ title['name'] }} ({{ title['first_air_date'][:4] }})</h5>
+                            <p class="card-text">{{ title['overview'][:75] }}...</p>
+                            <a href="#" class="btn btn-primary">{{ title['in_production'] }}</a>
+
+                          </div>
+                        </div>
+                    </div>
+<!--    <p>{{ title.keys() }}()</p>-->
+<!--                        <p>{{ title['in_production'] }}()</p>-->
+
+                    {% endfor %}
+                </div>
+        {% elif request.form['user_search'] %}
+        <p>Sorry, there are no matches for {{ request.form['user_search'] }}...:(</p>
+        {% endif %}
+
+
+        <script>
+          function copyTextbyClick() {
+            let copyText = document.getElementById("user_text");
+            copyText.select();
+            document.execCommand("copy");
+          }
+
+          function deleteTextbyClick() {
+            let copyText = document.getElementById("user_text");
+            copyText.select();
+            document.execCommand("delete");
+          }
+        </script>
+
+{% endblock %}
