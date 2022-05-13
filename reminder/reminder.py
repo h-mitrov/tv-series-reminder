@@ -11,12 +11,9 @@ tmdb.REQUESTS_TIMEOUT = 5
 
 @main_app.route('/', methods=['GET', 'POST'])
 def home():
+    user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
     field_value = ''
     search = None
-
-    @login_required
-    def render_save_url(cur_title):
-        return url_for("like_action")
 
     if request.method == 'POST':
         search = tmdb.Search()
@@ -30,16 +27,10 @@ def home():
             full_info = tmdb.TV(title.get('id'))
             full_response = full_info.info()
             title['in_production'] = full_response.get('in_production')
-            # print(type(current_user))
-            # print()
-            # print()
-            # print()
-            # print()
-            # print()
-            # # title['link'] = render_save_url(title)
-            # # title['saved_status'] = current_user.has_saved_title(title)
 
-    return render_template('home.html', field_value=field_value, search=search)
+
+
+    return render_template('home.html', field_value=field_value, search=search, user=user)
 
 
 @main_app.route('/profile')
@@ -48,16 +39,31 @@ def profile():
     return render_template('profile.html', name=current_user.name)
 
 
-@main_app.route('/add/<int:title_id>/<action>')
+@main_app.route('/save/<int:tmdb_id>/<action>')
 @login_required
-def like_action(title_id, action):
-    title = Title.query.filter_by(id=title_id).first_or_404()
+def save_action(tmdb_id=None, action=None):
+
+    # if not request.args:
+    #     return abort(404)
+    #
+    # tmdb_id = request.args.get('tmdb_id')
+    # action = request.args.get('action')
+    user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
+    title = db.session.query(Title).filter_by(tmdb_id=tmdb_id).first()
+
+    # return '{}, {}'.format(user, title)
+
+    if not title:
+        title = Title(tmdb_id=tmdb_id)
+        db.session.add(title)
+
     if action == 'save':
-        current_user.save_title(title)
+        user.save_title(title.tmdb_id)
         db.session.commit()
     if action == 'delete':
-        current_user.delete_title(title)
+        user.delete_title(title.tmdb_id)
         db.session.commit()
-    return redirect(request.referrer)
+
+    return '', 204
 
 
