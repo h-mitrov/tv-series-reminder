@@ -38,14 +38,12 @@
                             {% else %}
                             <a href="{{ url_for('reminder.save_action', tmdb_id=title['id'], action='delete') }}">Delete</a>
                             {% endif %}
-<!--                              Здесь нужно добавить кнопки с нужными ссылками (или придумать другой способ, как сохранять и удалять сериалы)
-                                  кроме того, нужно придумать, как сделать так, чтобы страница не перезагружалась при этом действии (я бы попробовал вернуть ту же схему
-                                  в reminder последней функции, как и в оригинальном гайде в StackOverflov-->
+                            <p>{{ title['last_air_date'] }}</p>
+                            <p>{{ title['next_episode_to_air'] }}</p>
+
                           </div>
                         </div>
                     </div>
-<!--    <p>{{ title.keys() }}()</p>-->
-<!--                        <p>{{ title['in_production'] }}()</p>-->
 
                     {% endfor %}
                 </div>

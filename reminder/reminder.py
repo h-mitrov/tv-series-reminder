@@ -3,9 +3,12 @@ from flask_login import login_required, current_user
 import tmdbsimple as tmdb
 from .models import User, Title
 from . import db
+import datetime
+
+from api_key import API_KEY
 
 main_app = Blueprint('reminder', __name__)
-tmdb.API_KEY = '6597f21906b21190e71439495f57b0d2'
+tmdb.API_KEY = API_KEY
 tmdb.REQUESTS_TIMEOUT = 5
 
 
@@ -24,11 +27,24 @@ def home():
                 title['poster_path'] = 'https://i.ibb.co/7QtVShm/no-image.jpg'
             else:
                 title['poster_path'] = 'https://image.tmdb.org/t/p/w300/' + title.get('poster_path')
+
+            # here we're getting the full TV Series info using its id
             full_info = tmdb.TV(title.get('id'))
             full_response = full_info.info()
             title['in_production'] = full_response.get('in_production')
 
+            if not title['in_production']:
+                last_season_id = None
+                air_dates = None
+            else:
+                last_season_id = len(title['seasons'])
+                season_info = tmdb.TV_Seasons(title.get('id'), last_season_id).info()
+                air_dates = []
 
+                for episode in season_info['episodes']:
+                    air_dates.append(datetime.datetime.strptime(episode['air_date'], '%Y-%m-%d'))
+            title['last_season_id'] = last_season_id
+            title['air_dates'] = air_dates
 
     return render_template('home.html', field_value=field_value, search=search, user=user)
 
@@ -43,15 +59,8 @@ def profile():
 @login_required
 def save_action(tmdb_id=None, action=None):
 
-    # if not request.args:
-    #     return abort(404)
-    #
-    # tmdb_id = request.args.get('tmdb_id')
-    # action = request.args.get('action')
     user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
     title = db.session.query(Title).filter_by(tmdb_id=tmdb_id).first()
-
-    # return '{}, {}'.format(user, title)
 
     if not title:
         title = Title(tmdb_id=tmdb_id)
