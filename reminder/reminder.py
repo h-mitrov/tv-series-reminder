@@ -18,13 +18,14 @@ def home():
         user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
     except AttributeError:
         user = None
-
-    field_value = ''
+    user_search = ''
     search = None
 
     if request.method == 'POST':
+        if not user_search:
+            user_search = request.form.get('user_search')
         search = tmdb.Search()
-        response = search.tv(query=request.form.get('user_search'))
+        response = search.tv(query=user_search)
 
         for title in search.results:
             if not title.get('poster_path'):
@@ -51,7 +52,7 @@ def home():
             title['air_dates'] = air_dates
 
     return render_template('home.html',
-                           field_value=field_value,
+                           user_search=user_search,
                            search=search,
                            user=user,
                            flash=flash,
@@ -70,12 +71,11 @@ def profile():
     return render_template('profile.html', name=current_user.name)
 
 
-@main_app.route('/save', methods=['POST'])
+@main_app.route('/', methods=['PUT'])
 @login_required
 def save_action():
     user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
     title = db.session.query(Title).filter_by(tmdb_id=request.form.get('tmdb_id')).first()
-    # print(request.data.get('tmdb_id'))
     if not title:
         title = Title(tmdb_id=request.form.get('tmdb_id'),
                       poster_path=request.form.get('poster_path'),
@@ -98,3 +98,4 @@ def save_action():
     else:
         return abort(404)
 
+    return '', 204
