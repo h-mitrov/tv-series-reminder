@@ -25,21 +25,40 @@
 
         {% if search.results %}
                 <div class="row">
-                    {% for title in search.results %}
-                    <div class="col-3">
+                    {% for idx, title in enumerate(search.results) %}
+                    <div class="col-3" id="card-{{ idx }}">
                         <div class="card">
                           <img src="{{ title['poster_path'] }}" class="card-img-top" style="height: 400px" alt="...">
-                          <div class="card-body">
+                          <form class="card-body">
                             <h5 class="card-title">{{ title['name'] }} ({{ title['first_air_date'][:4] }})</h5>
                             <p class="card-text">{{ title['overview'][:75] }}...</p>
                             <a href="#" class="btn btn-primary">{{ title['in_production'] }}</a>
-                            {% if not user.has_saved_title(title['id']) %}
-                            <a href="{{ url_for('reminder.save_action', tmdb_id=title['id'], action='save') }}">Save</a>
-                            {% else %}
-                            <a href="{{ url_for('reminder.save_action', tmdb_id=title['id'], action='delete') }}">Delete</a>
+                            {% if not current_user.is_authenticated %}
+                              {{ flash('Please, login or sign up to set a notification.') }}
+                              <form action="/login" method="get">
+                                  <button type="submit" class="btn btn-primary">Save</button>
+                              </form>
+                            {% elif user != None %}
+                                {% if user.has_saved_title(title['id']) %}
+                                  <div hx-post="{{ url_for('reminder.save_action') }}">
+                                      <input type="hidden" name="action" value="delete">
+                                      <input type="hidden" name="tmdb_id" value="{{ title['id'] }}">
+                                      <button class="btn btn-primary">Delete</button>
+                                  </div>
+                                {% else %}
+                                  <div hx-post="{{ url_for('reminder.save_action') }}">
+                                      <input type="hidden" name="action" value="save">
+                                      <input type="hidden" name="tmdb_id" value="{{ title['id'] }}">
+                                      <input type="hidden" name="poster_path" value="{{ title['poster_path'] }}">
+                                      <input type="hidden" name="name" value="{{ title['name'] }}">
+                                      <input type="hidden" name="year" value="{{ title['first_air_date'][:4] }}">
+                                      <input type="hidden" name="overview" value="{{ title['overview'][:75] }}">
+                                      <input type="hidden" name="in_production" value="{{ title['in_production'] }}">
+                                      <input type="hidden" name="air_dates" value="{{ title['air_dates'] }}">
+                                      <button class="btn btn-primary">Save</button>
+                                  </div>
+                                {% endif %}
                             {% endif %}
-                            <p>{{ title['last_air_date'] }}</p>
-                            <p>{{ title['next_episode_to_air'] }}</p>
 
                           </div>
                         </div>
@@ -53,16 +72,21 @@
 
 
         <script>
-          function copyTextbyClick() {
-            let copyText = document.getElementById("user_text");
-            copyText.select();
-            document.execCommand("copy");
-          }
+          function ajaxgo() {
+          let data = new FormData();
+          data.append("name", getElementByName("name").value);
 
-          function deleteTextbyClick() {
-            let copyText = document.getElementById("user_text");
-            copyText.select();
-            document.execCommand("delete");
+          // AJAX
+
+          let xhr = new XMLHttpRequest();
+          xhr.open("POST", "/");
+          xhr.onload = function() {
+            console.log(this.response);
+          };
+          xhr.send(data);
+
+          // Prevent form from reloading page
+          return false;
           }
         </script>
 

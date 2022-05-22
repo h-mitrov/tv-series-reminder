@@ -27,6 +27,10 @@ class User(db.Model, UserMixin):
             db.session.query(Saved).filter_by(user_id=self.user_id,
                                               tmdb_id=tmdb_id).delete()
 
+            # if other users aren't subscribed to this title notifications, we delete it completely
+            # if not db.session.query(Saved).filter_by(tmdb_id=tmdb_id).count() > 0:
+            #     db.session.query(Title).filter_by(tmdb_id=tmdb_id).delete()
+
     def has_saved_title(self, tmdb_id):
         return db.session.query(Saved).filter_by(user_id=self.user_id,
                                                  tmdb_id=tmdb_id).count() > 0
@@ -43,7 +47,10 @@ class Title(db.Model):
     __tablename__ = 'Title'
     title_id = db.Column(db.Integer, primary_key=True)
     tmdb_id = db.Column(db.Integer)
-    body = db.Column(db.Text)
-    author_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
+    poster_path = db.Column(db.Text)
+    name = db.Column(db.Text)
+    year = db.Column(db.Integer)
+    overview = db.Column(db.Text)
+    in_production = db.Column(db.Boolean)
+    air_dates = db.Column(db.Text)
     saves = db.relationship('Saved', backref='Title', lazy='dynamic')

@@ -11,12 +11,6 @@
 </head>
 
 <body>
-      {% for message in get_flashed_messages() %}
-      <div>
-        <div>{{ message }}</div>
-      </div>
-      <br>
-      {% endfor %}
 
     <section class="hero is-primary is-fullheight">
 
@@ -64,9 +58,15 @@
     </section>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+<!--    <script src="{{ url_for('static', filename='htmx.min.js') }}"></script>-->
+    <script src="https://unpkg.com/htmx.org@1.7.0"
+            integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo"
+            crossorigin="anonymous"
+            defer></script>
+    <script src="{{ url_for('static', filename='jquery-3.3.1.slim.min.js') }}"</script>
+    <script src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
 </body>
 
 </html>

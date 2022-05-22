@@ -1,7 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
+<h1>
   Welcome, {{ name }}
 </h1>
+
+{% if saved_titles %}
+  <p>Here's your notification list:</p>
+  <div class="row">
+  {% for title in saved_titles %}
+    <div class="col-3">
+      <div class="card">
+        <img src="{{ title['poster_path'] }}" class="card-img-top" style="height: 400px" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ title['name'] }} ({{ title['first_air_date'][:4] }})</h5>
+          <p class="card-text">{{ title['overview'][:75] }}...</p>
+          <a href="#" class="btn btn-primary">{{ title['in_production'] }}</a>
+          {% if not user.has_saved_title(title['id']) %}
+          <a href="{{ url_for('reminder.save_action', tmdb_id=title['id'], action='save') }}">Save</a>
+          {% else %}
+          <a href="{{ url_for('reminder.save_action', tmdb_id=title['id'], action='delete') }}">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endif %}
+
+<p>Here's what </p>
 {% endblock %}
