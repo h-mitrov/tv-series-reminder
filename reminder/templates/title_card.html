@@ -1,0 +1,54 @@
+<div class="col-3" id="card-{{ title.get('tmdb_id') }}">
+    <div class="card">
+      <img src="{{ title.get('poster_path') }}" class="card-img-top" style="height: 400px" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{ title.get('name') }} ({{ title.get('year') }})</h5>
+        <p class="card-text">{{ title.get('overview') }}...</p>
+        <a href="#" class="btn btn-primary">{{ title.get('in_production') }}</a>
+        {% if not current_user.is_authenticated %}
+          {{ flash('Please, login or sign up to set a notification.') }}
+          <form action="/login" method="get">
+              <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+        {% elif user != None %}
+            {% if user.has_saved_title(title.get('tmdb_id')) %}
+              <form
+                  id="delete-form-{{ title.get('tmdb_id') }}"
+                  hx-put="{{ url_for('reminder.save_action') }}"
+                  hx-trigger="click">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="tmdb_id" value="{{ title.get('tmdb_id') }}">
+                <button id="delete-button-{{ title.get('tmdb_id') }}" class="btn btn-primary">Delete</button>
+              </form>
+              <button id="refresh-del-card-{{ title.get('tmdb_id') }}"
+                      style="display: none;"
+                      hx-get="{{ url_for('reminder.render_card', tmdb_id=title.get('tmdb_id')) }}"
+                      hx-target="#card-{{ title.get('tmdb_id') }}"
+                      hx-trigger="click from:#delete-form-{{ title.get('tmdb_id') }} delay:0.3s"
+                      hx-swap="outerHTML"></button>
+          {% else %}
+              <form id="save-form-{{ title.get('tmdb_id') }}"
+                    hx-put="{{ url_for('reminder.save_action') }}"
+                    hx-trigger="click from:#save-button-{{ title.get('tmdb_id') }}">
+                <input type="hidden" name="action" value="save">
+                <input type="hidden" name="tmdb_id" value="{{ title.get('tmdb_id') }}">
+                <input type="hidden" name="poster_path" value="{{ title.get('poster_path') }}">
+                <input type="hidden" name="name" value="{{ title.get('name') }}">
+                <input type="hidden" name="year" value="{{ title.get('year') }}">
+                <input type="hidden" name="overview" value="{{ title.get('overview') }}">
+                <input type="hidden" name="in_production" value="{{ title.get('in_production') }}">
+                <input type="hidden" name="air_dates" value="{{ title.get('air_dates') }}">
+                <button id="save-button-{{ title.get('tmdb_id') }}" class="btn btn-primary">Save</button>
+              </form>
+              <button id="refresh-save-card-{{ title.get('tmdb_id') }}"
+                      style="display: none;"
+                      hx-get="{{ url_for('reminder.render_card', tmdb_id=title.get('tmdb_id')) }}"
+                      hx-target="#card-{{ title.get('tmdb_id') }}"
+                      hx-trigger="click from:#save-form-{{ title.get('tmdb_id') }} delay:0.3s"
+                      hx-swap="outerHTML"></button>
+              </form>
+            {% endif %}
+        {% endif %}
+      </div>
+    </div>
+</div>

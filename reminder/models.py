@@ -28,8 +28,8 @@ class User(db.Model, UserMixin):
                                               tmdb_id=tmdb_id).delete()
 
             # if other users aren't subscribed to this title notifications, we delete it completely
-            if not db.session.query(Saved).filter_by(tmdb_id=tmdb_id).count() > 0:
-                db.session.query(Title).filter_by(tmdb_id=tmdb_id).delete()
+            # if not db.session.query(Saved).filter_by(tmdb_id=tmdb_id).count() > 0:
+            #     db.session.query(Title).filter_by(tmdb_id=tmdb_id).delete()
 
     def has_saved_title(self, tmdb_id):
         return db.session.query(Saved).filter_by(user_id=self.user_id,

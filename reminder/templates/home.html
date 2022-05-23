@@ -24,50 +24,11 @@
         {% if search.results %}
                 <div class="row">
                     {% for title in search.results %}
-                    <div class="col-3">
-                        <div class="card">
-                          <img src="{{ title['poster_path'] }}" class="card-img-top" style="height: 400px" alt="...">
-                          <div class="card-body">
-                            <h5 class="card-title">{{ title['name'] }} ({{ title['first_air_date'][:4] }})</h5>
-                            <p class="card-text">{{ title['overview'][:75] }}...</p>
-                            <a href="#" class="btn btn-primary">{{ title['in_production'] }}</a>
-                            {% if not current_user.is_authenticated %}
-                              {{ flash('Please, login or sign up to set a notification.') }}
-                              <form action="/login" method="get">
-                                  <button type="submit" class="btn btn-primary">Save</button>
-                              </form>
-                            {% elif user != None %}
-                                {% if user.has_saved_title(title['id']) %}
-                                  <form hx-put="{{ url_for('reminder.save_action') }}">
-                                      <input type="hidden" name="action" value="delete">
-                                      <input type="hidden" name="tmdb_id" value="{{ title['id'] }}">
-                                      <input type="hidden" name="user_search" value="{{ user_search }}">
-                                      <button class="btn btn-primary">Delete</button>
-                                  </form>
-                                {% else %}
-                                  <form hx-put="{{ url_for('reminder.save_action') }}">
-                                      <input type="hidden" name="action" value="save">
-                                      <input type="hidden" name="tmdb_id" value="{{ title['id'] }}">
-                                      <input type="hidden" name="poster_path" value="{{ title['poster_path'] }}">
-                                      <input type="hidden" name="name" value="{{ title['name'] }}">
-                                      <input type="hidden" name="year" value="{{ title['first_air_date'][:4] }}">
-                                      <input type="hidden" name="overview" value="{{ title['overview'][:75] }}">
-                                      <input type="hidden" name="in_production" value="{{ title['in_production'] }}">
-                                      <input type="hidden" name="air_dates" value="{{ title['air_dates'] }}">
-                                      <input type="hidden" name="user_search" value="{{ user_search }}">
-                                      <button class="btn btn-primary">Save</button>
-                                  </form>
-                                {% endif %}
-                            {% endif %}
-
-                          </div>
-                        </div>
-                    </div>
-
+                        {% include 'title_card.html' %}
                     {% endfor %}
                 </div>
-        {% elif request.form['user_search'] %}
-        <p>Sorry, there are no matches for {{ request.form['user_search'] }}...:(</p>
+        {% elif request.form.get('user_search') %}
+        <p>Sorry, there are no matches for {{ request.form.get('user_search') }}...:(</p>
         {% endif %}
 
 {% endblock %}

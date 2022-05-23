@@ -5,6 +5,7 @@ from .models import User, Title, Saved
 from . import db
 import datetime
 
+
 from api_key import API_KEY
 
 main_app = Blueprint('reminder', __name__)
@@ -48,6 +49,8 @@ def home():
 
                 for episode in season_info.get('episodes'):
                     air_dates.append(datetime.datetime.strptime(episode.get('air_date'), '%Y-%m-%d'))
+            title['tmdb_id'] = title.get('id')
+            title['year'] = title.get('first_air_date')
             title['last_season_id'] = last_season_id
             title['air_dates'] = air_dates
 
@@ -62,18 +65,30 @@ def home():
 @main_app.route('/profile')
 @login_required
 def profile():
-    # saved_titles = db.session.query(Saved).filter_by(user_id=current_user.user_id)
-    # titles_info = []
-    # for title in saved_titles:
-    #     full_info = tmdb.TV(title.tmdb_id)
-    #     full_response = full_info.info()
-    # , saved_titles = saved_titles
-    return render_template('profile.html', name=current_user.name)
+    user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
+
+    saved_titles = db.session.query(Title).join(Saved).filter(Saved.user_id == current_user.user_id).filter(Title.tmdb_id == Saved.tmdb_id).all()
+    titles_list = []
+    for title in saved_titles:
+        info_dict = dict()
+        info_dict['tmdb_id'] = title.tmdb_id
+        info_dict['poster_path'] = title.poster_path
+        info_dict['name'] = title.name
+        info_dict['year'] = title.year
+        info_dict['overview'] = title.overview
+        info_dict['in_production'] = title.in_production
+        info_dict['air_dates'] = title.air_dates
+        titles_list.append(info_dict)
+
+    return render_template('profile.html', name=current_user.name, titles_list=titles_list, user=user)
 
 
-@main_app.route('/', methods=['PUT'])
+@main_app.route('/data_operation', methods=['GET', 'PUT'])
 @login_required
 def save_action():
+    if request.method == 'GET':
+        return '', 200
+
     user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
     title = db.session.query(Title).filter_by(tmdb_id=request.form.get('tmdb_id')).first()
     if not title:
@@ -95,7 +110,22 @@ def save_action():
     if action.lower() == 'delete':
         user.delete_title(title.tmdb_id)
         db.session.commit()
-    else:
-        return abort(404)
 
-    return '', 204
+    return '', 200
+
+
+@main_app.route('/render_card/', methods=['GET'])
+@login_required
+def render_card():
+    tmdb_id = request.args.get('tmdb_id')
+    user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
+    title = db.session.query(Title).filter_by(tmdb_id=tmdb_id).first()
+    title_dict = dict()
+    title_dict['tmdb_id'] = title.tmdb_id
+    title_dict['poster_path'] = title.poster_path
+    title_dict['name'] = title.name
+    title_dict['year'] = title.year
+    title_dict['overview'] = title.overview
+    title_dict['in_production'] = title.in_production
+    title_dict['air_dates'] = title.air_dates
+    return render_template('title_card.html', user=user, title=title_dict)
