@@ -97,7 +97,7 @@ def save_action():
                       name=request.form.get('name'),
                       year=request.form.get('year'),
                       overview=request.form.get('overview'),
-                      in_production=0 if request.form.get('in_production') is False else 1,
+                      in_production=0 if request.form.get('in_production').lower == 'false' else 1,
                       air_dates=request.form.get('air_dates')
                       )
         db.session.add(title)

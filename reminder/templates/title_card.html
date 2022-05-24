@@ -2,8 +2,8 @@
     <div class="card">
       <img src="{{ title.get('poster_path') }}" class="card-img-top" style="height: 400px" alt="...">
       <div class="card-body">
-        <h5 class="card-title">{{ title.get('name') }} ({{ title.get('year') }})</h5>
-        <p class="card-text">{{ title.get('overview') }}...</p>
+        <h5 class="card-title">{{ title.get('name') }} ({{ title.get('year')[:4] }})</h5>
+        <p class="card-text" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }">{{ title.get('overview') }}...</p>
         <a href="#" class="btn btn-primary">{{ title.get('in_production') }}</a>
         {% if not current_user.is_authenticated %}
           {{ flash('Please, login or sign up to set a notification.') }}

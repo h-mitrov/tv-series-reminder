@@ -4,4 +4,4 @@ from reminder import db
 
 
 title = db.session.query(Title).filter_by(tmdb_id=74220).first()
-print(jsonify(title))
+print(title.tmdb_id)
