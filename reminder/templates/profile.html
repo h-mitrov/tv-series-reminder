@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
+<h1>
   Welcome, {{ name }}
 </h1>
+
+{% if titles_list %}
+  <p>Here's your notification list:</p>
+  <div class="row">
+  {% for title in titles_list %}
+      {% include 'title_card.html' %}
+  {% endfor %}
+  </div>
+
+{% endif %}
+
 {% endblock %}

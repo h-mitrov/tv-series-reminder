@@ -17,34 +17,40 @@ class User(db.Model, UserMixin):
     def get_id(self):
         return self.user_id
 
-    def save_title(self, title):
-        if not self.has_saved_title(title):
-            saving = Saved(user_id=self.user_id, title_id=title.title_id)
+    def save_title(self, tmdb_id):
+        if not self.has_saved_title(tmdb_id):
+            saving = Saved(user_id=self.user_id, tmdb_id=tmdb_id)
             db.session.add(saving)
 
-    def delete_title(self, title):
-        if self.has_saved_title(title):
-            Saved.query.filter_by(
-                user_id=self.user_id,
-                title_id=title.title_id).delete()
+    def delete_title(self, tmdb_id):
+        if self.has_saved_title(tmdb_id):
+            db.session.query(Saved).filter_by(user_id=self.user_id,
+                                              tmdb_id=tmdb_id).delete()
 
-    def has_saved_title(self, title):
-        return Saved.query.filter(
-            Saved.user_id == self.user_id,
-            Saved.title_id == title.title_id).count() > 0
+            # if other users aren't subscribed to this title notifications, we delete it completely
+            # if not db.session.query(Saved).filter_by(tmdb_id=tmdb_id).count() > 0:
+            #     db.session.query(Title).filter_by(tmdb_id=tmdb_id).delete()
+
+    def has_saved_title(self, tmdb_id):
+        return db.session.query(Saved).filter_by(user_id=self.user_id,
+                                                 tmdb_id=tmdb_id).count() > 0
 
 
 class Saved(db.Model):
     __tablename__ = 'Saved'
     save_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
-    title_id = db.Column(db.Integer, db.ForeignKey('Title.title_id'))
+    tmdb_id = db.Column(db.Integer, db.ForeignKey('Title.tmdb_id'))
 
 
 class Title(db.Model):
     __tablename__ = 'Title'
     title_id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
-    author_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
+    tmdb_id = db.Column(db.Integer)
+    poster_path = db.Column(db.Text)
+    name = db.Column(db.Text)
+    year = db.Column(db.Integer)
+    overview = db.Column(db.Text)
+    in_production = db.Column(db.Boolean)
+    air_dates = db.Column(db.Text)
     saves = db.relationship('Saved', backref='Title', lazy='dynamic')
