@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 import tmdbsimple as tmdb
 from .models import User, Title, Saved
 from . import db
-import datetime
+
 
 from config import API_KEY
 
@@ -45,14 +45,18 @@ def home():
                 last_season_id = max([season['season_number'] for season in full_response.get('seasons')])
                 season_info = tmdb.TV_Seasons(title.get('id'), last_season_id).info()
                 air_dates = []
-
-                for episode in season_info.get('episodes'):
-                    air_dates.append(str(episode.get('air_date')))
+                episodes = season_info.get('episodes')
+                if episodes is not None:
+                    for episode in season_info.get('episodes'):
+                        air_date = episode.get('air_date')
+                        if air_date is not None:
+                            air_dates.append(air_date)
+                    title['air_dates'] = '|'.join(air_dates)
 
             title['tmdb_id'] = title.get('id')
             title['year'] = title.get('first_air_date')
             title['last_season_id'] = last_season_id
-            title['air_dates'] = '|'.join(air_dates)
+
 
     return render_template('home.html',
                            user_search=user_search,

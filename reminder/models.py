@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from flask_login import UserMixin
 from . import db
 import datetime
@@ -39,10 +40,11 @@ class User(db.Model, UserMixin):
         if not self.has_saved_title(title.tmdb_id):
             saving = Saved(user_id=self.user_id, tmdb_id=title.tmdb_id)
             db.session.add(saving)
-
-            if title.air_dates:
-                for date in title.air_dates.split('|'):
-                    notification = Notification(date=date, user_id=self.user_id, tmdb_id=title.tmdb_id)
+            print('\n' * 25, type(title.air_dates))
+            if title.air_dates != 'None':
+                for air_date in title.air_dates.split('|'):
+                    air_date = datetime.datetime.strptime(air_date, '%Y-%m-%d').date()
+                    notification = Notification(date=air_date, user_id=self.user_id, tmdb_id=title.tmdb_id)
                     db.session.add(notification)
 
         db.session.commit()
@@ -86,6 +88,6 @@ class Saved(db.Model):
 class Notification(db.Model):
     __tablename__ = 'Notification'
     event_id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Text)
+    date = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
     tmdb_id = db.Column(db.Integer, db.ForeignKey('Title.tmdb_id'))
