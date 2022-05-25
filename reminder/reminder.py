@@ -5,8 +5,7 @@ from .models import User, Title, Saved
 from . import db
 import datetime
 
-
-from api_key import API_KEY
+from config import API_KEY
 
 main_app = Blueprint('reminder', __name__)
 tmdb.API_KEY = API_KEY
@@ -48,11 +47,12 @@ def home():
                 air_dates = []
 
                 for episode in season_info.get('episodes'):
-                    air_dates.append(datetime.datetime.strptime(episode.get('air_date'), '%Y-%m-%d'))
+                    air_dates.append(str(episode.get('air_date')))
+
             title['tmdb_id'] = title.get('id')
             title['year'] = title.get('first_air_date')
             title['last_season_id'] = last_season_id
-            title['air_dates'] = air_dates
+            title['air_dates'] = '|'.join(air_dates)
 
     return render_template('home.html',
                            user_search=user_search,
@@ -90,26 +90,13 @@ def save_action():
         return '', 200
 
     user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
-    title = db.session.query(Title).filter_by(tmdb_id=request.form.get('tmdb_id')).first()
-    if not title:
-        title = Title(tmdb_id=request.form.get('tmdb_id'),
-                      poster_path=request.form.get('poster_path'),
-                      name=request.form.get('name'),
-                      year=request.form.get('year'),
-                      overview=request.form.get('overview'),
-                      in_production=0 if request.form.get('in_production').lower == 'false' else 1,
-                      air_dates=request.form.get('air_dates')
-                      )
-        db.session.add(title)
 
     action = request.form.get('action')
 
     if action.lower() == 'save':
-        user.save_title(title.tmdb_id)
-        db.session.commit()
+        user.save_title(request.form.get('tmdb_id'), full_title_data=request.form)
     if action.lower() == 'delete':
-        user.delete_title(title.tmdb_id)
-        db.session.commit()
+        user.delete_title(request.form.get('tmdb_id'))
 
     return '', 200
 
