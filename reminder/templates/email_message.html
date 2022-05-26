@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>New episodes today!</title>
+</head>
+<body style="margin:0; padding:0;">
+    <h2>New episodes today!</h2>
+    <p>Hello, {{ user_name }}. There are new episodes of your favourite TV Series:</p>
+        <ul>
+            {% for tv_show in user_titles %}
+            <li>{{ tv_show }}</li>
+            {% endfor %}
+        </ul>
+    <p>Enjoy watching!</p>
+    <p style="font-size: 0.7rem;">P.S. TV Series Reminder does not distribute, broadcast,
+        or otherwise provide television or video content.</p>
+</body>
+</html>

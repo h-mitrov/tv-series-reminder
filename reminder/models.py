@@ -40,7 +40,6 @@ class User(db.Model, UserMixin):
         if not self.has_saved_title(title.tmdb_id):
             saving = Saved(user_id=self.user_id, tmdb_id=title.tmdb_id)
             db.session.add(saving)
-            print('\n' * 25, type(title.air_dates))
             if title.air_dates != 'None':
                 for air_date in title.air_dates.split('|'):
                     air_date = datetime.datetime.strptime(air_date, '%Y-%m-%d').date()
