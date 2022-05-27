@@ -1,9 +1,14 @@
+import os
+import time
+import atexit
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
-import config
+from apscheduler.schedulers.background import BackgroundScheduler
 
+import config
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -46,6 +51,19 @@ def create_app(test_config=None):
     from .email_sender import email_sender as email_blueprint
     app.register_blueprint(email_blueprint)
 
+    # this condition prevents scheduler from running twice
+    if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        # init scheduler for everyday notification sending
+        from .email_sender import send_notifications
+
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(func=send_notifications, trigger="interval", days=1)
+        scheduler.start()
+
+        # shut down the scheduler when exiting the app
+        atexit.register(lambda: scheduler.shutdown())
+
     return app
+
 
 

@@ -21,13 +21,6 @@ def send_notifications():
     current_date = date.today()
     messages_dict = dict()
 
-    # array = [103516, 11, 12]
-    # titles = db.session.query(Title).filter(Title.tmdb_id.in_(array)).all()
-    # result = ''
-    # for title in titles:
-    #     result += title.name
-
-
     # cleaning database from expired events : possibly, should create a separate function for this
     db.session.query(Notification).filter(Notification.date < current_date).delete()
     db.session.commit()
@@ -52,3 +45,7 @@ def send_notifications():
         time.sleep(5)
 
     return '', 200
+
+
+def test_func():
+    print('This is test')
