@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block title %}{{ "{}'s profile on TV Series Reminder".format(name) }}{% endblock %}
+
+
 {% block content %}
 <h1>
   Welcome, {{ name }}
@@ -7,11 +10,12 @@
 
 {% if titles_list %}
   <p>Here's your notification list:</p>
-  <div class="row">
+  <ul class="movies">
   {% for title in titles_list %}
       {% include 'title_card.html' %}
   {% endfor %}
-  </div>
+  </ul>
+
 
 {% endif %}
 

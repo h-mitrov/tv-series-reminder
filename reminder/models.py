@@ -32,7 +32,7 @@ class User(db.Model, UserMixin):
                           name=full_title_data.get('name'),
                           year=full_title_data.get('year'),
                           overview=full_title_data.get('overview'),
-                          in_production=0 if full_title_data.get('in_production').lower == 'false' else 1,
+                          in_production=False if full_title_data.get('in_production') == 'False' else True,
                           air_dates=full_title_data.get('air_dates')
                           )
             db.session.add(title)

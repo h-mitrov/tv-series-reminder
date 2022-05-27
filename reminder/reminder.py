@@ -12,6 +12,37 @@ tmdb.API_KEY = API_KEY
 tmdb.REQUESTS_TIMEOUT = 5
 
 
+def discover_title_info(tmdb_id):
+    # here we're getting the full TV Series info using its id
+    title_data = dict()
+
+    full_info = tmdb.TV(tmdb_id)
+    full_response = full_info.info()
+
+    title_data['in_production'] = full_response.get('in_production')
+    print(full_response['name'], title_data['in_production'])
+    if not title_data['in_production']:
+        last_season_id = None
+        air_dates = None
+    else:
+        last_season_id = max([season['season_number'] for season in full_response.get('seasons')])
+        season_info = tmdb.TV_Seasons(tmdb_id, last_season_id).info()
+        air_dates = []
+        episodes = season_info.get('episodes')
+        if episodes is not None:
+            for episode in season_info.get('episodes'):
+                air_date = episode.get('air_date')
+                if air_date is not None:
+                    air_dates.append(air_date)
+            title_data['air_dates'] = '|'.join(air_dates)
+
+    title_data['tmdb_id'] = tmdb_id
+    title_data['year'] = full_response.get('first_air_date')
+    title_data['last_season_id'] = last_season_id
+
+    return title_data
+
+
 @main_app.route('/', methods=['GET', 'POST'])
 def home():
     try:
@@ -29,34 +60,11 @@ def home():
 
         for title in search.results:
             if not title.get('poster_path'):
-                title['poster_path'] = 'https://i.ibb.co/7QtVShm/no-image.jpg'
+                title['poster_path'] = 'https://i.ibb.co/7QtVShm/no-image_1.jpg'
             else:
-                title['poster_path'] = 'https://image.tmdb.org/t/p/w300/' + title.get('poster_path')
+                title['poster_path'] = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + title.get('poster_path')
 
-            # here we're getting the full TV Series info using its id
-            full_info = tmdb.TV(title.get('id'))
-            full_response = full_info.info()
-            title['in_production'] = full_response.get('in_production')
-
-            if not title['in_production']:
-                last_season_id = None
-                air_dates = None
-            else:
-                last_season_id = max([season['season_number'] for season in full_response.get('seasons')])
-                season_info = tmdb.TV_Seasons(title.get('id'), last_season_id).info()
-                air_dates = []
-                episodes = season_info.get('episodes')
-                if episodes is not None:
-                    for episode in season_info.get('episodes'):
-                        air_date = episode.get('air_date')
-                        if air_date is not None:
-                            air_dates.append(air_date)
-                    title['air_dates'] = '|'.join(air_dates)
-
-            title['tmdb_id'] = title.get('id')
-            title['year'] = title.get('first_air_date')
-            title['last_season_id'] = last_season_id
-
+            title.update(discover_title_info(title.get('id')))
 
     return render_template('home.html',
                            user_search=user_search,

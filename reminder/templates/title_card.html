@@ -1,11 +1,11 @@
-<div class="col-3" id="card-{{ title.get('tmdb_id') }}">
-    <div class="card">
-      <img src="{{ title.get('poster_path') }}" class="card-img-top" style="height: 400px" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">{{ title.get('name') }} ({{ title.get('year')[:4] }})</h5>
-        <p class="card-text" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }">{{ title.get('overview') }}...</p>
-        <a href="#" class="btn btn-primary">{{ title.get('in_production') }}</a>
-        {% if not current_user.is_authenticated %}
+<li id="card-{{ title.get('tmdb_id') }}">
+<div class="movie">
+    <figure class="movie__figure">
+      <img src="{{ title.get('poster_path') }}" class="movie__poster">
+<!--      <figcaption><span class="movie__vote">{{ title.get('in_production') }}</span></figcaption>-->
+      <h2 class="movie__title">{{ title.get('name') }} ({{ title.get('year')[:4] }})</h2></figure>
+<!--      <p class="card-text" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }">{{ title.get('overview') }}...</p>-->
+      {% if not current_user.is_authenticated %}
           {{ flash('Please, login or sign up to set a notification.') }}
           <form action="/login" method="get">
               <button type="submit" class="btn btn-primary">Save</button>
@@ -18,7 +18,7 @@
                   hx-trigger="click">
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="tmdb_id" value="{{ title.get('tmdb_id') }}">
-                <button id="delete-button-{{ title.get('tmdb_id') }}" class="btn btn-primary">Delete</button>
+                    <button id="delete-button-{{ title.get('tmdb_id') }}" class="btn btn-primary">Delete</button>
               </form>
               <button id="refresh-del-card-{{ title.get('tmdb_id') }}"
                       style="display: none;"
@@ -49,6 +49,6 @@
               </form>
             {% endif %}
         {% endif %}
-      </div>
-    </div>
+    </figure>
 </div>
+</li>

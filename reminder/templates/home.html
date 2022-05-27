@@ -1,32 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}HTML Stripper{% endblock %}
+{% block title %}TV Series Reminder{% endblock %}
 
 {% block main %}
 
-<div class="container theme-showcase" role="main">
-    <div class="page-header">
+<div class="page-header">
         <h2>This is a TV Series Reminder</h2>
-    </div>
-        <form action="/" method="post" enctype="multipart/form-data">
+</div>
+<div>
+    <form action="/" method="post" enctype="multipart/form-data">
             <input
                     type="text"
-                    class="form-control col-xl-6"
+                    class="form-control"
                     name="user_search"
                     id="user_search"
                     placeholder="Input movie title..."
                     autofocus
                     required>
-          <br>
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
+</div>
 
         {% if search.results %}
-                <div class="row">
+                <ul class="movies">
                     {% for title in search.results %}
                         {% include 'title_card.html' %}
                     {% endfor %}
-                </div>
+                </ul>
         {% elif request.form.get('user_search') %}
         <p>Sorry, there are no matches for {{ request.form.get('user_search') }}...:(</p>
         {% endif %}
