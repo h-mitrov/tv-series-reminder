@@ -4,12 +4,12 @@
 
 
 {% block content %}
-<h1>
+<h2>
   Welcome, {{ name }}
-</h1>
+</h2>
 
 {% if titles_list %}
-  <p>Here's your notification list:</p>
+  <h5>Here's your notification list:</h5>
   <ul class="movies">
   {% for title in titles_list %}
       {% include 'title_card.html' %}

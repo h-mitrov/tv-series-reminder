@@ -3,7 +3,7 @@
     <figure class="movie__figure">
       <img src="{{ title.get('poster_path') }}" class="movie__poster">
 <!--      <figcaption><span class="movie__vote">{{ title.get('in_production') }}</span></figcaption>-->
-      <h2 class="movie__title">{{ title.get('name') }} ({{ title.get('year')[:4] }})</h2></figure>
+      <h2 class="movie__title">{{ title.get('name') }} {{ title.get('year') }}</h2></figure>
 <!--      <p class="card-text" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }">{{ title.get('overview') }}...</p>-->
       {% if not current_user.is_authenticated %}
           {{ flash('Please, login or sign up to set a notification.') }}

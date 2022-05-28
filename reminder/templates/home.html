@@ -14,21 +14,23 @@
                     class="form-control"
                     name="user_search"
                     id="user_search"
+                    value="{{ user_search }}"
                     placeholder="Input movie title..."
                     autofocus
                     required>
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
 </div>
+<h3>{{ greeting }}</h3>
 
-        {% if search.results %}
-                <ul class="movies">
-                    {% for title in search.results %}
-                        {% include 'title_card.html' %}
-                    {% endfor %}
-                </ul>
-        {% elif request.form.get('user_search') %}
-        <p>Sorry, there are no matches for {{ request.form.get('user_search') }}...:(</p>
-        {% endif %}
+{% if results %}
+        <ul class="movies">
+            {% for title in results %}
+                {% include 'title_card.html' %}
+            {% endfor %}
+        </ul>
+{% elif request.form.get('user_search') %}
+<p>Sorry, there are no matches for {{ request.form.get('user_search') }}...:(</p>
+{% endif %}
 
 {% endblock %}

@@ -21,6 +21,10 @@ body {
   width: 90%;
 }
 
+h3 {
+    margin-top: 20px;
+}
+
 button {
     margin-top: 7px;
 }
@@ -45,6 +49,21 @@ input {
   margin: 0;
   padding: 0;
 }
+
+.nav-link,
+.nav-link:hover,
+.nav-link:focus {
+    color: #fff;
+    background-color: #3a4f5b;
+}
+
+.menu-elem:focus,
+.menu-elem:hover {
+    font-color: #fff;
+    background-color: #3a4f5b;
+}
+
+
 
 .search {
   font-size: 1.5rem;
