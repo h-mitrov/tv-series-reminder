@@ -1,6 +1,6 @@
 import asyncio
 import time
-from flask import render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
+from flask import render_template, request, redirect, url_for, flash, abort, session, Blueprint
 from flask_login import login_required, current_user
 
 import aiohttp
@@ -98,7 +98,7 @@ async def fetch_series(url: str) -> list:
         async with session.get(url) as response:
             full_response = await response.json()
 
-    title_ids = [title.get('id') for title in full_response['results']]
+    title_ids = [title.get('id') for title in full_response.get('results')]
     tasks = [asyncio.create_task(discover_title_info(title_id)) for title_id in title_ids]
     all_titles = []
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
