@@ -1,0 +1,47 @@
+<div class="fixed-top min-vh-100 col-md-2 col-xl-2 col-lg-2 text-white bg-dark d-none d-md-block">
+    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-5 d-none d-sm-inline">Reminder</span>
+    </a>
+
+    <ul class="nav nav-pills flex-column mb-auto" id="menu">
+        <li class="menu-elem">
+            <a href="{{ url_for('reminder.get_results', tv_type='trending_today') }}" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">Trending Today</span></a>
+        </li>
+        <li class="menu-elem">
+            <a href="{{ url_for('reminder.get_results', tv_type='trending_this_week') }}" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">Trending This Week</span></a>
+        </li>
+
+        <li class="menu-elem">
+            <a href="{{ url_for('reminder.get_results', tv_type='popular') }}" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">Popular TV Series</span> </a>
+        </li>
+        <li class="menu-elem">
+            <a href="{{ url_for('reminder.get_results', tv_type='top_rated') }}" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">Top Rated Series</span> </a>
+        </li>
+        <li class="menu-elem">
+            <a href="{{ url_for('reminder.get_results', tv_type='on_air') }}" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">Airing Today</span> </a>
+        </li>
+        <li class="menu-elem">
+            <a href="{{ url_for('reminder.get_results', tv_type='airing_this_week') }}" class="nav-link px-0 align-middle">
+                <span class="ms-1 d-none d-sm-inline">Airing This Week</span> </a>
+        </li>
+    </ul>
+    <hr>
+    <div id="about">
+        <p>
+            <small>
+            Developer: <a href="https://www.linkedin.com/in/h-mitrov/">Hennadii Mitrov</a>
+            <br>
+            Stack: Python, Flask
+            <br>
+            Source code: <a href="https://github.com/h-mitrov/tv-series-reminder">tv-series-reminder</a>
+            </small>
+        </p>
+
+    </div>
+
+</div>

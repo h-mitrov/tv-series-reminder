@@ -1,0 +1,72 @@
+<p></p>
+<div class="container">
+    <div class="row">
+        <div class="col-6 align-middle ">
+            <div class="dropdown float-start d-md-none">
+                <a href="#" class="align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownActions"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+<!--                    <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">-->
+                    <span>Discover</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.get_results', tv_type='trending_today') }}">
+                    Trending Today
+                    </a></li>
+
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.get_results', tv_type='trending_this_week') }}">
+                        Trending This Week
+                    </a></li>
+
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.get_results', tv_type='on_air') }}">
+                        Airing Today
+                    </a></li>
+
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.get_results', tv_type='airing_this_week') }}">
+                        Airing This Week
+                    </a></li>
+
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.get_results', tv_type='popular') }}">
+                    Popular TV Series
+                    </a></li>
+
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.get_results', tv_type='top_rated') }}">
+                    Top Rated Series
+                    </a></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-6 align-middle ">
+            <div class="dropdown float-end inline-block align-middle">
+                <a href="#" class="align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="">My profile</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    {% if current_user.is_authenticated %}
+                    <li><a class="dropdown-item" href="{{ url_for('reminder.profile') }}">
+                        Saved titles
+                    </a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                        Logout
+                    </a></li>
+                    {% else %}
+                    <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">
+                        Login
+                    </a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{{ url_for('auth.signup') }}">
+                        Sign Up
+                    </a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<p class="d-md-none"></p>
