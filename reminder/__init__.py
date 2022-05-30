@@ -66,4 +66,5 @@ def create_app(test_config=None):
     return app
 
 
-
+def get_app():
+    return app
