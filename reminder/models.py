@@ -80,13 +80,13 @@ class Title(db.Model):
 class Saved(db.Model):
     __tablename__ = 'Saved'
     save_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
-    tmdb_id = db.Column(db.Integer, db.ForeignKey('Title.tmdb_id'))
+    user_id = db.Column(db.Integer)
+    tmdb_id = db.Column(db.Integer)
 
 
 class Notification(db.Model):
     __tablename__ = 'Notification'
     event_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'))
-    tmdb_id = db.Column(db.Integer, db.ForeignKey('Title.tmdb_id'))
+    user_id = db.Column(db.Integer)
+    tmdb_id = db.Column(db.Integer)
