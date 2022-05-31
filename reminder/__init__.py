@@ -14,7 +14,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 # Local application imports
 import config
-from .create_database import create_my_database
+from .create_database import create_tables
 
 
 # init SQLAlchemy so we can use it later in our models
@@ -67,6 +67,9 @@ def create_app(test_config=None):
         # shut down the scheduler when exiting the app
         atexit.register(lambda: scheduler.shutdown())
 
+    # added database command for creating tables
+    app.cli.add_command(create_tables)
+
     # added exceptions logger to see them in Heroku logs
     app.logger.addHandler(logging.StreamHandler(sys.stdout))
     app.logger.setLevel(logging.ERROR)
@@ -78,6 +81,3 @@ def get_app():
     app = create_app()
     return app
 
-
-# if there's no database, we create a new one
-# create_my_database()
