@@ -1,7 +1,9 @@
 # Standard library imports
 import os
+import sys
 import time
 import atexit
+import logging
 
 # Third party imports
 from flask import Flask
@@ -67,6 +69,10 @@ def create_app(test_config=None):
 
         # shut down the scheduler when exiting the app
         atexit.register(lambda: scheduler.shutdown())
+
+    # added exceptions logger to see them in Heroku logs
+    app.logger.addHandler(logging.StreamHandler(sys.stdout))
+    app.logger.setLevel(logging.ERROR)
 
     return app
 
