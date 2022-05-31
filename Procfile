@@ -1,1 +1,1 @@
-web: gunicorn reminder:app
+web: gunicorn wsgi:app
