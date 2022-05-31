@@ -83,4 +83,4 @@ def get_app():
 
 
 # if there's no database, we create a new one
-create_my_database()
+# create_my_database()
