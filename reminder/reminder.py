@@ -101,7 +101,7 @@ async def fetch_series(url: str) -> list:
     title_ids = [title.get('id') for title in full_response.get('results')]
     tasks = [asyncio.create_task(discover_title_info(title_id)) for title_id in title_ids]
     all_titles = []
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     
     for task in tasks:
         # start_time = time.time()
@@ -113,35 +113,35 @@ async def fetch_series(url: str) -> list:
 
 def fetch_trending_series(period: str) -> list:
     query_link = f'https://api.themoviedb.org/3/trending/tv/{period}?api_key={API_KEY}'
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     results = asyncio.run(fetch_series(query_link))
     return results
 
 
 def fetch_popular_series() -> list:
     query_link = f'https://api.themoviedb.org/3/tv/popular?api_key={API_KEY}&language=en-US&page=1'
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     results = asyncio.run(fetch_series(query_link))
     return results
 
 
 def fetch_top_series() -> list:
     query_link = f'https://api.themoviedb.org/3/tv/top_rated?api_key={API_KEY}'
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     results = asyncio.run(fetch_series(query_link))
     return results
 
 
 def fetch_airing_today() -> list:
     query_link = f'https://api.themoviedb.org/3/tv/airing_today?api_key={API_KEY}&language=en-US&page=1'
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     results = asyncio.run(fetch_series(query_link))
     return results
 
 
 def fetch_airing_this_week() -> list:
     query_link = f'https://api.themoviedb.org/3/tv/on_the_air?api_key={API_KEY}&language=en-US&page=1'
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     results = asyncio.run(fetch_series(query_link))
     return results
 
@@ -158,12 +158,12 @@ def home():
 
     if request.method == 'POST':
         user_search = request.form.get('user_search')
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+        # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         results = asyncio.run(search_titles(user_search))
         greeting = f"Here are the search results for '{user_search}':"
 
     if request.method == 'GET':
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+        # asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         results = fetch_trending_series('day')
         greeting = "Trending today:"
 
