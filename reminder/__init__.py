@@ -26,9 +26,7 @@ mail = Mail()
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.secret_key = 'kkskdfksjdfslkdj23'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(config)
 
     db.init_app(app)
 
@@ -36,7 +34,6 @@ def create_app(test_config=None):
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    app.config.from_object(config)
     mail.init_app(app)
 
     from .models import User
