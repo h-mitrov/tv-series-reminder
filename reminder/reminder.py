@@ -222,7 +222,7 @@ def get_results(tv_type):
 @login_required
 def profile():
     user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
-    title_ids = db.session.query(Saved).filter_by(user_id=current_user.user_id).all()
+    title_ids = db.session.query(Saved.tmdb_id).filter_by(user_id=current_user.user_id).all()
     saved_titles = db.session.query(Title).filter(Title.tmdb_id.in_(title_ids.subquery())).all()
 
     titles_list = []
