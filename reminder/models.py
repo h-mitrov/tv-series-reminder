@@ -66,7 +66,7 @@ class Title(db.Model):
     tmdb_id = db.Column(db.Integer)
     poster_path = db.Column(db.Text)
     name = db.Column(db.Text)
-    year = db.Column(db.Integer)
+    year = db.Column(db.Text)
     overview = db.Column(db.Text)
     in_production = db.Column(db.Boolean)
     air_dates = db.Column(db.Text)
