@@ -5,7 +5,7 @@ FLASK_ENV = os.environ.get('FLASK_ENV')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # database settings
-SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # TMDB API settings
