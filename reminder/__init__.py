@@ -1,14 +1,19 @@
+# Standard library imports
 import os
 import time
 import atexit
 
+# Third party imports
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
 from apscheduler.schedulers.background import BackgroundScheduler
 
+# Local application imports
 import config
+from .create_database import create_my_database
+
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -67,4 +72,9 @@ def create_app(test_config=None):
 
 
 def get_app():
+    app = create_app()
     return app
+
+
+# if there's no database, we create a new one
+create_my_database()
