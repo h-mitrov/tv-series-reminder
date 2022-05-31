@@ -223,7 +223,13 @@ def get_results(tv_type):
 def profile():
     user = db.session.query(User).filter_by(user_id=current_user.user_id).first()
 
-    saved_titles = db.session.query(Title).join(Saved).filter(Saved.user_id == current_user.user_id).filter(Title.tmdb_id == Saved.tmdb_id).all()
+    saved_titles = (db.session.query(Title)
+                    .select_from(Saved)
+                    .join(Saved, Saved.user_id == current_user.user_id)
+                    .filter(Title.tmdb_id == Saved.tmdb_id)
+                    .all()
+                    )
+
     titles_list = []
     for title in saved_titles:
         title_dict = unpack_title(title)
