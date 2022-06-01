@@ -28,6 +28,7 @@ Type the following command to your terminal:
     pip install -r requirements.txt              
 ```
 4. Set the environmental variables in your venv terminal:
+
 Windows:
 ```bash
     $env:FLASK_ENV="development"
