@@ -119,7 +119,7 @@ class Saved(db.Model):
 
 class Notification(db.Model):
     """
-    Class Title. Works as a model for the database.
+    Class Notification. Works as a model for the database.
     """
     __tablename__ = 'Notification'
     event_id = db.Column(db.Integer, primary_key=True)
