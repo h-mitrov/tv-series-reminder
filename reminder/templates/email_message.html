@@ -1,184 +1,409 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="x-apple-disable-message-reformatting">
-  <title>New episodes today!</title>
-</head>
-<body style="margin:0; padding:0;">
-
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Simple Transactional Email</title>
     <style>
-<!--      @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,200&display=swap");-->
+      /* -------------------------------------
+          GLOBAL RESETS
+      ------------------------------------- */
 
-      * {
-        margin: 0;
-        padding: 0;
-        border: 0;
-      }
-
-      body {
-        font-family: "Arial", sans-serif;
-        background-color: #d8dada;
-        font-size: 19px;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 3%;
-      }
+      /*All the styling goes here*/
 
       img {
+        border: none;
+        -ms-interpolation-mode: bicubic;
         max-width: 100%;
       }
 
-      header {
-        width: 98%;
+      body {
+        background-color: #f6f6f6;
+        font-family: sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
       }
 
-      li {
-        margin-left: 60px;
+      table {
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%; }
+        table td {
+          font-family: sans-serif;
+          font-size: 14px;
+          vertical-align: top;
       }
 
-      #logo {
-        max-width: 120px;
-        margin: 3% 0 3% 3%;
-        float: left;
+      /* -------------------------------------
+          BODY & CONTAINER
+      ------------------------------------- */
+
+      .body {
+        background-color: #f6f6f6;
+        width: 100%;
       }
 
-      #wrapper {
-        background-color: #f0f6fb;
+      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+      .container {
+        display: block;
+        margin: 0 auto !important;
+        /* makes it centered */
+        max-width: 580px;
+        padding: 10px;
+        width: 580px;
       }
 
-      #social {
-        float: right;
-        margin: 3% 2% 4% 3%;
-        list-style-type: none;
+      /* This should also be a block element, so that it will fill 100% of the .container */
+      .content {
+        box-sizing: border-box;
+        display: block;
+        margin: 0 auto;
+        max-width: 580px;
+        padding: 10px;
       }
 
-      #social > li {
-        display: inline;
+      /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+      .main {
+        background: #ffffff;
+        border-radius: 3px;
+        width: 100%;
       }
 
-      #social > li > a > img {
-        max-width: 35px;
+      .wrapper {
+        box-sizing: border-box;
+        padding: 20px;
       }
 
+      .content-block {
+        padding-bottom: 10px;
+        padding-top: 10px;
+      }
+
+      .footer {
+        clear: both;
+        margin-top: 10px;
+        text-align: center;
+        width: 100%;
+      }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+          color: #999999;
+          font-size: 12px;
+          text-align: center;
+      }
+
+      /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
       h1,
-      p {
-        margin: 3%;
+      h2,
+      h3,
+      h4 {
+        color: #000000;
+        font-family: sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin: 0;
+        margin-bottom: 30px;
       }
+
+      h1 {
+        font-size: 35px;
+        font-weight: 300;
+        text-align: center;
+        text-transform: capitalize;
+      }
+
+      p,
+      ul,
+      ol {
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+        margin-bottom: 15px;
+      }
+        p li,
+        ul li,
+        ol li {
+          list-style-position: inside;
+          margin-left: 5px;
+      }
+
+      a {
+        color: #3498db;
+        text-decoration: underline;
+      }
+
+      /* -------------------------------------
+          BUTTONS
+      ------------------------------------- */
       .btn {
-        float: right;
-        margin: 0 2% 4% 0;
-        background-color: #303840;
-        color: #f6faff;
+        box-sizing: border-box;
+        width: 100%; }
+        .btn > tbody > tr > td {
+          padding-bottom: 15px; }
+        .btn table {
+          width: auto;
+      }
+        .btn table td {
+          background-color: #ffffff;
+          border-radius: 5px;
+          text-align: center;
+      }
+        .btn a {
+          background-color: #ffffff;
+          border: solid 1px #3498db;
+          border-radius: 5px;
+          box-sizing: border-box;
+          color: #3498db;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 14px;
+          font-weight: bold;
+          margin: 0;
+          padding: 12px 25px;
+          text-decoration: none;
+          text-transform: capitalize;
+      }
+
+      .btn-primary table td {
+        background-color: #3498db;
+      }
+
+      .btn-primary a {
+        background-color: #3498db;
+        border-color: #3498db;
+        color: #ffffff;
+      }
+
+      /* -------------------------------------
+          OTHER STYLES THAT MIGHT BE USEFUL
+      ------------------------------------- */
+      .last {
+        margin-bottom: 0;
+      }
+
+      .first {
+        margin-top: 0;
+      }
+
+      .align-center {
+        text-align: center;
+      }
+
+      .align-right {
+        text-align: right;
+      }
+
+      .align-left {
+        text-align: left;
+      }
+
+      .clear {
+        clear: both;
+      }
+
+      .mt0 {
+        margin-top: 0;
+      }
+
+      .mb0 {
+        margin-bottom: 0;
+      }
+
+      .preheader {
+        color: transparent;
+        display: none;
+        height: 0;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        mso-hide: all;
+        visibility: hidden;
+        width: 0;
+      }
+
+      .powered-by a {
         text-decoration: none;
-        font-weight: 800;
-        padding: 8px 12px;
-        border-radius: 8px;
-        letter-spacing: 2px;
       }
 
       hr {
-        height: 1px;
-        background-color: #303840;
-        clear: both;
-        width: 96%;
-        margin: auto;
+        border: 0;
+        border-bottom: 1px solid #f6f6f6;
+        margin: 20px 0;
       }
 
-      #contact {
-        text-align: center;
-        padding-bottom: 3%;
-        line-height: 16px;
-        font-size: 12px;
-        color: #303840;
+      /* -------------------------------------
+          RESPONSIVE AND MOBILE FRIENDLY STYLES
+      ------------------------------------- */
+      @media only screen and (max-width: 620px) {
+        table.body h1 {
+          font-size: 28px !important;
+          margin-bottom: 10px !important;
+        }
+        table.body p,
+        table.body ul,
+        table.body ol,
+        table.body td,
+        table.body span,
+        table.body a {
+          font-size: 16px !important;
+        }
+        table.body .wrapper,
+        table.body .article {
+          padding: 10px !important;
+        }
+        table.body .content {
+          padding: 0 !important;
+        }
+        table.body .container {
+          padding: 0 !important;
+          width: 100% !important;
+        }
+        table.body .main {
+          border-left-width: 0 !important;
+          border-radius: 0 !important;
+          border-right-width: 0 !important;
+        }
+        table.body .btn table {
+          width: 100% !important;
+        }
+        table.body .btn a {
+          width: 100% !important;
+        }
+        table.body .img-responsive {
+          height: auto !important;
+          max-width: 100% !important;
+          width: auto !important;
+        }
       }
+
+      /* -------------------------------------
+          PRESERVE THESE STYLES IN THE HEAD
+      ------------------------------------- */
+      @media all {
+        .ExternalClass {
+          width: 100%;
+        }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%;
+        }
+        .apple-link a {
+          color: inherit !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+          text-decoration: none !important;
+        }
+        #MessageViewBody a {
+          color: inherit;
+          text-decoration: none;
+          font-size: inherit;
+          font-family: inherit;
+          font-weight: inherit;
+          line-height: inherit;
+        }
+        .btn-primary table td:hover {
+          background-color: #34495e !important;
+        }
+        .btn-primary a:hover {
+          background-color: #34495e !important;
+          border-color: #34495e !important;
+        }
+      }
+
     </style>
   </head>
   <body>
-    <div id="wrapper">
-      <header>
-        <div id="logo">
-          <img
-            src="https://mdbgo.io/dawidadach/responsiveemail/img/logo.png"
-            alt=""
-          />
-        </div>
-        <div>
-          <ul id="social">
-            <li>
-              <a href="#" target="_blank"
-                ><img
-                  src="https://mdbgo.io/dawidadach/responsiveemail/img/fb-color.png"
-                  alt=""
-              /></a>
-            </li>
-            <li>
-              <a href="#" target="_blank"
-                ><img
-                  src="https://mdbgo.io/dawidadach/responsiveemail/img/in-color.png"
-                  alt=""
-              /></a>
-            </li>
-            <li>
-              <a href="#" target="_blank"
-                ><img
-                  src="https://mdbgo.io/dawidadach/responsiveemail/img/tw-color.png"
-                  alt=""
-              /></a>
-            </li>
-            <li>
-              <a href="#" target="_blank"
-                ><img
-                  src="https://mdbgo.io/dawidadach/responsiveemail/img/yt-color.png"
-                  alt=""
-              /></a>
-            </li>
-          </ul>
-        </div>
-      </header>
-      <div id="banner">
-        <img
-          src="https://i.ibb.co/k2cHY0n/photo-2022-05-26-13-12-09.jpg"
-          alt=""
-        />
-      </div>
-      <div class="one-col">
-        <h1>New episodes today!</h1>
+    <span class="preheader">New episodes of your favourite TV Series are on air!</span>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
 
-        <p>
-          Hello, {{ user_name }}. Today there are new episodes of the following TV Series:
-        </p>
-        <ul>
-            {% for tv_show in user_titles %}
-            <li>{{ tv_show }}</li>
-            {% endfor %}
-        </ul>
-        <p>Enjoy watching!</p>
-        <p style="font-size: 0.7rem;">P.S. TV Series Reminder does not distribute, broadcast,
-        or otherwise provide television or video content.</p>
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table role="presentation" class="main">
 
-        <hr />
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper">
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td>
+                        <h1>New episodes today!</h1>
+                        <p>
+                          Hello, {{ user_name }}. Today there are new episodes of the following TV Series:
+                        </p>
+                        <ul>
+                            {% for tv_show in user_titles %}
+                            <li>{{ tv_show }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>Enjoy watching!</p>
 
-        <footer>
-          <p id="contact">
-            Some text <br />
-            Street <br />
-            Country <br />
-            email@email.email
-          </p>
-        </footer>
-      </div>
-    </div>
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                          <tbody>
+                            <tr>
+                              <td align="left">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                  <tbody>
+                                    <tr>
+                                      <td> <a href="https://tv-series-reminder.herokuapp.com/">Add another notification</a> </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <small>P.S. TV Series Reminder does not distribute, broadcast,
+                        or otherwise provide television or video content.</small>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+            <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- END CENTERED WHITE CONTAINER -->
+
+            <!-- START FOOTER -->
+            <div class="footer">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="content-block">
+                    <span class="apple-link">TV Series Reminder. Developed by <a href="https://www.linkedin.com/in/h-mitrov/">Hennadii Mitrov</a></span>
+                    <br> Don't like these emails? <a href="">Unsubscribe</a>.
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+
+          </div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
   </body>
 </html>

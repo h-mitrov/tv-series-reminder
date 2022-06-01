@@ -1,7 +1,15 @@
-def create_my_database():
-    import os
-    from reminder import db, get_app
-    from . import models
+# Third party imports
+import click
+from flask.cli import with_appcontext
 
-    if not os.path.exists('db.sqlite'):
-        db.create_all(app=get_app())
+
+# this is a command that creates the database tables. Has to be called from CLI on Heroku app settings
+@click.command(name='create_tables')
+@with_appcontext
+def create_tables():
+    """
+    It is used to manually create or update the database with a simple
+    'flask create_tables' command in the terminal.
+    """
+    from reminder import db, models
+    db.create_all()

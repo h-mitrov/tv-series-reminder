@@ -14,7 +14,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 # Local application imports
 import config
-from .create_database import create_my_database
+from .create_database import create_tables
 
 
 # init SQLAlchemy so we can use it later in our models
@@ -25,10 +25,13 @@ mail = Mail()
 
 
 def create_app(test_config=None):
+    """
+    Creates the Flask application, configured with environmental variables from config.py.
+    Registers the blueprints, initializes the database, the login manager, the email sender,
+    and configures the background scheduler for everyday email sending. 
+    """
     app = Flask(__name__)
-    app.secret_key = 'kkskdfksjdfslkdj23'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(config)
 
     db.init_app(app)
 
@@ -36,7 +39,6 @@ def create_app(test_config=None):
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    app.config.from_object(config)
     mail.init_app(app)
 
     from .models import User
@@ -70,6 +72,9 @@ def create_app(test_config=None):
         # shut down the scheduler when exiting the app
         atexit.register(lambda: scheduler.shutdown())
 
+    # added database command for creating tables
+    app.cli.add_command(create_tables)
+
     # added exceptions logger to see them in Heroku logs
     app.logger.addHandler(logging.StreamHandler(sys.stdout))
     app.logger.setLevel(logging.ERROR)
@@ -78,9 +83,10 @@ def create_app(test_config=None):
 
 
 def get_app():
+    """
+    It is used to import the ready-made Flask app to other files, such as wsgi.py,
+    needed to launch the app on the web. 
+    """
     app = create_app()
     return app
 
-
-# if there's no database, we create a new one
-# create_my_database()
