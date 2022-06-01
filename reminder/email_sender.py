@@ -1,5 +1,5 @@
 # Standard library imports
-from datetime import datetime, date
+import datetime
 import time
 
 # Third party imports
@@ -18,7 +18,7 @@ email_sender = Blueprint('email_sender', __name__)
 def send_notifications() -> str:
     """ Sends email notifications to users. Takes no arguments. """
 
-    current_date = date.today()
+    current_date = datetime.date.today()
     messages_dict = dict()
 
     # cleaning database from expired events : possibly, should create a separate function for this

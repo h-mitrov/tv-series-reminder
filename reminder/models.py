@@ -57,7 +57,7 @@ class User(db.Model, UserMixin):
             db.session.add(saving)
             if title.air_dates != 'None':
                 for air_date in title.air_dates.split('|'):
-                    air_date = datetime.datetime.strptime(air_date, '%Y-%m-%d').date()
+                    air_date = datetime.strptime(air_date, '%Y-%m-%d').date()
                     notification = Notification(date=air_date, user_id=self.user_id, tmdb_id=title.tmdb_id)
                     db.session.add(notification)
 
