@@ -1,3 +1,4 @@
+# Third party imports
 import click
 from flask.cli import with_appcontext
 
@@ -6,5 +7,9 @@ from flask.cli import with_appcontext
 @click.command(name='create_tables')
 @with_appcontext
 def create_tables():
+    """
+    It is used to manually create or update the database with a simple
+    'flask create_tables' command in the terminal.
+    """
     from reminder import db, models
     db.create_all()

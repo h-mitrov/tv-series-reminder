@@ -25,6 +25,11 @@ mail = Mail()
 
 
 def create_app(test_config=None):
+    """
+    Creates the Flask application, configured with environmental variables from config.py.
+    Registers the blueprints, initializes the database, the login manager, the email sender,
+    and configures the background scheduler for everyday email sending. 
+    """
     app = Flask(__name__)
     app.config.from_object(config)
 
@@ -78,6 +83,10 @@ def create_app(test_config=None):
 
 
 def get_app():
+    """
+    It is used to import the ready-made Flask app to other files, such as wsgi.py,
+    needed to launch the app on the web. 
+    """
     app = create_app()
     return app
 
