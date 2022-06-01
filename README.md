@@ -8,7 +8,7 @@ Any feedback or advise would be really appreciated — I am on my way on becomin
 ## Demo
 Feel free to try out the app — go to https://tv-series-reminder.herokuapp.com/
 
-![TV Series Reminder](https://i.ibb.co/ZNDVhSs/image.png)
+![TV Series Reminder](https://i.ibb.co/6vyJFcW/image.png)
 
 ## How to run it locally
 To run this app locally, stick to the following guide:
