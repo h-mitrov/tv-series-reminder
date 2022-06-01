@@ -24,7 +24,7 @@
                       style="display: none;"
                       hx-get="{{ url_for('reminder.render_card', tmdb_id=title.get('tmdb_id')) }}"
                       hx-target="#card-{{ title.get('tmdb_id') }}"
-                      hx-trigger="click from:#delete-form-{{ title.get('tmdb_id') }} delay:0.3s"
+                      hx-trigger="click from:#delete-form-{{ title.get('tmdb_id') }} delay:0.5s"
                       hx-swap="outerHTML"></button>
           {% else %}
               <form id="save-form-{{ title.get('tmdb_id') }}"
@@ -44,7 +44,7 @@
                       style="display: none;"
                       hx-get="{{ url_for('reminder.render_card', tmdb_id=title.get('tmdb_id')) }}"
                       hx-target="#card-{{ title.get('tmdb_id') }}"
-                      hx-trigger="click from:#save-form-{{ title.get('tmdb_id') }} delay:0.3s"
+                      hx-trigger="click from:#save-form-{{ title.get('tmdb_id') }} delay:0.5s"
                       hx-swap="outerHTML"></button>
               </form>
             {% endif %}

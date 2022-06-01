@@ -27,7 +27,7 @@ def send_notifications():
 
     # finding all notifications for today and assigning them to a certain email
     relevant_notifications = db.session.query(Notification).filter_by(date=current_date).all()
-    unique_users = set([notification.user_id for notification in relevant_notifications])
+    unique_users = set(notification.user_id for notification in relevant_notifications)
 
     for i_user in unique_users:
         user = db.session.query(User).filter_by(user_id=i_user).first()
@@ -42,9 +42,9 @@ def send_notifications():
                           recipients=[user_email])
         message.html = render_template('email_message.html', user_name=user_name, user_titles=user_titles)
         mail.send(message)
-        time.sleep(5)
+        time.sleep(3)
 
-    return '', 200
+    return '<h1>Success</h1>', 200
 
 
 def test_func():
